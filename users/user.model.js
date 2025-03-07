@@ -1,27 +1,19 @@
 const { DataTypes } = require('sequelize');
 
-module.exports = module;
-
-function model(sequelize) {
-    const attributes = {
-        email: { type: DataTypes.STRING, allowNull: false },
+module.exports = (sequelize) => {
+    return sequelize.define('User', {
+        email: { type: DataTypes.STRING, allowNull: false, unique: true },
         passwordHash: { type: DataTypes.STRING, allowNull: false },
         title: { type: DataTypes.STRING, allowNull: false },
         firstName: { type: DataTypes.STRING, allowNull: false },
         lastName: { type: DataTypes.STRING, allowNull: false },
         role: { type: DataTypes.STRING, allowNull: false }
-    };
-
-    const options = {
+    }, {
         defaultScope: {
-            // exclude hash by default
             attributes: { exclude: ['passwordHash'] }
         },
         scopes: {
-            // include hash with this scope
-            withHash: { attributes: {}, }
+            withHash: { attributes: {} }
         }
-    };
-
-    return sequelize.define('User', attributes, options);  
-}
+    });
+};

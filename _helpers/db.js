@@ -1,28 +1,29 @@
-const config = require('config.json');
+const { Sequelize, DataTypes } = require('sequelize');
+const config = require('../config.json');
 const mysql = require('mysql2/promise');
-const { Sequelize } = require('sequelize');
 
 module.exports = db = {};
 
 initialize();
 
 async function initialize() {
-
-    // Creates db if it doesn't already exist
-
     const { host, port, user, password, database } = config.database;
-    const connection = await mysql.createConnection({ host, port, user, password});
-    await connection.query('CREATE DATABASE IF NOT EXISTS \` $(database)\`;');
 
-    // Connects to the database (db)
+    try {
+        const connection = await mysql.createConnection({ host, port, user, password });
+        await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
+        console.log(`✅ Database '${database}' is ready.`);
+    } catch (error) {
+        console.error('⚠️ MySQL Connection Error:', error);
+        process.exit(1);
+    }
 
-    const sequelize = new Sequelize(database, user, password, { dialect: 'mysql' });
+    // Create Sequelize instance
+    const sequelize = new Sequelize(database, user, password, { host, dialect: 'mysql' });
 
-    // Initializes the models and adds them to the exported database object
+    // Load models
+    db.User = require('../users/user.model.js')(sequelize, DataTypes);
 
-    db.User = require('../users/user.model')(sequelize);
-
-    // Synchronize all models with database
-
+    // Sync database
     await sequelize.sync({ alter: true });
 }

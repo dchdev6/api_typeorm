@@ -1,5 +1,5 @@
 {
-  "name": "crud_api",
+  "name": "type_orm",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
