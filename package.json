@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node ./server.js",
-    "start:dev": "nodemon ./server.js"
-  },
+    "dev": "ts-node ./server.ts",
+    "build": "tsc",
+    "start": "node ./server.js"
+}
+,
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -31,8 +33,12 @@
     "@types/express": "^5.0.0",
     "@types/helmet": "^0.0.48",
     "@types/http-status-codes": "^1.2.0",
+    "@types/node": "^22.13.9",
     "@types/uuid": "^10.0.0",
     "nodemon": "^2.0.15",
+    "sequelize-typescript": "^2.1.6",
+    "ts-node": "^10.9.2",
+    "typescipt": "^1.0.0",
     "typescript": "^5.8.2"
   }
 }

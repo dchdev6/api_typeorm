@@ -1,14 +1,13 @@
-module.exports = errorHandler;
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.errorHandler = errorHandler;
 function errorHandler(err, req, res, next) {
-    switch(true) {
-        case typeof err === 'string':
-
-            // Custom application error
-            const is404 = err.toLowerCase().endsWith('not found');
-            const statusCode = is404 ? 404 : 400;
-            return res.status(statusCode).json({ message: err });
-        default:
-            return res.status(500).json({ message: err.message });
+    if (typeof err === 'string') {
+        const is404 = err.toLowerCase().endsWith('not found');
+        const statusCode = is404 ? 404 : 400;
+        res.status(statusCode).json({ message: err });
+    }
+    else {
+        res.status(500).json({ message: err.message || 'Internal Server Error' });
     }
 }
